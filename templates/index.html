@@ -1,0 +1,50 @@
+{% extends "header.html" %}
+{% block content %}
+
+<div class="homepage">
+<h1 style=" margin-left:43%;">Welcome, {{current_user.display_name}}</h1>
+<h1 style=" margin-left:35%;">Recent Posts for Your Area - {{current_user.location.city}}, {{current_user.location.state}}</h1>
+<br>
+{% if posts %}
+{% for post in posts %}
+
+<div class="card" style=" margin-left:37%;width: 600;">
+  <div class="card-body" style="padding-top: 0px;">
+      <h4 class="card-title"><a href="/post/{{post.id}}/">{{post.title}}</a></h4>
+      <h5 class="card-text">
+        {% if post.posted_by.profile_pic %}
+        <img src="{{ post.posted_by.profile_pic.url}}" alt="" style=" margin-right: 5px; height: 40;">
+        {% else %}
+        <div></div>
+        {% endif %}
+        <a href="/profile/{{post.posted_by.id}}/">@{{post.posted_by}}</a></h5>
+      <br>
+      <p class="card-text">{{post.time_stamp}}</p>
+      <p class="card-text">{{post.body}}</p>
+      {% if post.image %}
+          <img src="{{ post.image.url}}" alt="" style="height: 300; width: 300;">
+      {% else %}
+          <div></div>
+      {% endif %}
+  <div class="card-body" style="padding-bottom: 0px;">
+    <button type="button" class="btn btn-primary" onclick="location.href='/comment/{{post.id}}/'">Comment</button>
+  </div>
+</div>
+
+  <div class="card-body" style="padding-top: 0px;">
+    <h4>{{ post.comment_count }} Comments 
+      {% if post.comment_count > 0 %}
+      <a href="/post/{{post.id}}/">See All</a></h4>
+      {% endif %}
+  </div>
+</div>
+<br>
+
+{% endfor %}
+{% else %}
+<br>
+<br>
+<h4>No Posts in Your area yet! Click <a href="/addpost/">Here</a> to make the first Post for Your City!</h4>
+{% endif %}
+
+{% endblock %}

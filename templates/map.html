@@ -1,0 +1,35 @@
+{% extends "header.html" %}
+{% block content %}
+
+<br>
+<div class="card" style=" margin-left:37%;width: 500;">
+    <div class="card-body">
+        <h5 class="card-title">Confirm Your Location</h5>
+        <p class="card-text">City: {{results.major_city}}</p>
+        <p class="card-text">State: {{results.state}}</p>
+        <p class="card-text">Zipcode: {{results.zipcode}}</p>
+        <p class="card-text">Population: {{results.population}}</p>
+        <p class="card-text">Timezone: {{results.timezone}}</p>
+        <button type="button" class="btn btn-primary" onclick="location.href='/'">Confirm </button>
+        <button type="button" class="btn btn-primary" onclick="location.href='/location/'">Go Back</button>
+    </div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <div style="height: 300px; width: 500px;" id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        var lat = {{ results.lat }};
+        var lng = {{ results.lng }};
+        var map = L.map('map').setView([lat, lng], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        L.marker([lat, lng]).addTo(map);
+    </script>
+</div>
+
+
+
+
+
+
+{% endblock %}

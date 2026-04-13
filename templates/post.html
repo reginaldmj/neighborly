@@ -1,0 +1,61 @@
+{% extends "header.html" %}
+{% block content %}
+
+<div class="card" style=" margin-left:37%;width: 600;">
+    <div class="card-body" style="padding-top: 0px;">
+        <h4 class="card-title"><a href="/post/{{post.id}}/">{{post.title}}</a></h4>
+        <h5 class="card-text">
+        {% if post.posted_by.profile_pic %}
+        <img src="{{ post.posted_by.profile_pic.url}}" alt="" style=" margin-right: 5px; height: 40;">
+        {% else %}
+        <div></div>
+        {% endif %}
+            <a href="/profile/{{post.posted_by.id}}/">@{{post.posted_by}}</a></h5>
+        <br>
+        <p class="card-text">{{post.time_stamp}}</p>
+        <p class="card-text">{{post.body}}</p>
+        {% if post.image %}
+            <img src="{{ post.image.url}}" alt="" style="height: 300; width: 300;">
+        {% else %}
+            <div></div>
+        {% endif %}
+    </div>
+
+    {% if current_user == post.posted_by or is_admin %}
+    <div class="card-body" style="padding-bottom: 0px;">
+        <button type="button" class="btn btn-primary" onclick="location.href='/post/{{post.id}}/edit/'">Edit Post</button>
+        <button type="button" class="btn btn-danger" onclick="location.href='/post/{{post.id}}/delete/'">Delete Post</button>
+    </div>
+    {% endif %}
+    <div class="card-body" style="padding-bottom: 0px;">
+    <button type="button" class="btn btn-primary" onclick="location.href='/comment/{{post.id}}/'">Comment</button>
+  </div>
+
+  <div class="card-body" style="padding-top: 0px;">
+    <h4>{{ post.comment_count }} comments</h4>
+
+    {% for comment in comments %}
+    <div class="comments" style="padding: 10px;">
+      <p class="font-weight-bold">
+        <div class="card-text">
+        {% if comment.posted_by.profile_pic %}
+        <img src="{{ comment.posted_by.profile_pic.url}}" alt="" style=" margin-right: 5px; height: 40;">
+        {% else %}
+        <div></div>
+        {% endif %}
+          <a href="/profile/{{comment.posted_by.id}}/">@{{comment.posted_by}}</a>
+            <span class=" text-muted font-weight-normal">
+                {{ comment.created_on }}
+              </span>
+        </div>
+      </p>
+      {{ comment.body | linebreaks }}
+    </div>
+    {% endfor %}
+  </div>
+  
+</div>
+<br>
+
+
+{% endblock %}
